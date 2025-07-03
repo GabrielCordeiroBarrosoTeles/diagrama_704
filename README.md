@@ -1,57 +1,91 @@
 ```mermaid
 flowchart TD
-    %% === Fontes Externas de Contato ===
-    Email["📧 Email"]
-    WhatsApp["💬 WhatsApp"]
+    %% === Fontes Externas ===
+    subgraph EXTERNOS[Fontes Externas]
+        direction LR
+        Email["Email"]
+        WhatsApp["WhatsApp"]
+    end
 
-    %% === Integrações de Sistemas ===
-    Jira["📌 Jira"]
-    Pay704["💳 704Pay"]
+    %% === Integrações ===
+    subgraph INTEGRACOES[Integrações]
+        direction LR
+        Jira["Jira"]
+        Pay704["704Pay"]
+    end
 
     %% === Núcleo Operacional ===
-    PainelGestor["🧑‍💼 Painel&nbsp;Gestor"]
-    PainelSuporte["🛠️ Painel&nbsp;Suporte"]
-    CentralConhecimento["📚 Central&nbsp;de&nbsp;Conhecimento"]
+    subgraph NUCLEO["Núcleo Operacional"]
+        direction LR
+        PainelGestor["Painel Gestor"]
+        PainelSuporte["Painel Suporte"]
+        CentralConhecimento["Central de Conhecimento"]
+    end
 
-    %% === Administração e Finanças ===
-    ModuloADM["🔧 Módulo&nbsp;ADM"]
-    SetorFinanceiro["💼 Setor&nbsp;Financeiro"]
+    %% === Administração ===
+    subgraph ADMINISTRACAO["Administração e Finanças"]
+        direction LR
+        ModuloADM["Modulo ADM"]
+        SetorFinanceiro["Setor Financeiro"]
+    end
 
-    %% === Conexões de Chat ===
-    PainelGestor        <-->|💬 Chat| PainelSuporte
-    Email               <-->|💬 Chat| PainelSuporte
-    WhatsApp            <-->|💬 Chat| PainelSuporte
-    SetorFinanceiro     <-->|💬 Chat| PainelGestor
+    %% === Fluxos Chat ===
+    Email -->|Chat| PainelSuporte
+    WhatsApp -->|Chat| PainelSuporte
+    PainelGestor -->|Chat| PainelSuporte
+    PainelSuporte -->|Chat| PainelGestor
+    SetorFinanceiro -->|Chat| PainelGestor
+    PainelGestor -->|Chat| SetorFinanceiro
 
-    %% === Fluxo Jira ===
-    Jira                -->|📝 Cria&nbsp;demanda| PainelSuporte
-    PainelSuporte       -->|📩 Feedback| Jira
+    %% === Jira Fluxo ===
+    Jira -->|Cria demanda| PainelSuporte
+    PainelSuporte -->|Feedback| Jira
 
-    %% === Fluxo 704Pay ===
-    Pay704              -->|📤 Transfere&nbsp;info| PainelSuporte
-    PainelSuporte       -->|📥 Status/Confirmação| Pay704
+    %% === 704Pay Fluxo ===
+    Pay704 -->|Transfere info| PainelSuporte
+    PainelSuporte -->|Status| Pay704
 
-    %% === Integração API 704Pay x ADM ===
-    Pay704              <-->|🔗 API| ModuloADM
+    %% === API 704Pay <-> ADM ===
+    Pay704 -->|API| ModuloADM
+    ModuloADM -->|API| Pay704
 
-    %% === Comunicação ADM & Financeiro ===
-    ModuloADM           <-->|🔄 Envia/Recebe&nbsp;info| SetorFinanceiro
+    %% === ADM <-> Financeiro ===
+    ModuloADM -->|Envia info| SetorFinanceiro
+    SetorFinanceiro -->|Retorna info| ModuloADM
 
-    %% === Base de Conhecimento ===
-    PainelSuporte       <-->|🔍 Consulta&nbsp;/&nbsp;Atualiza| CentralConhecimento
+    %% === Suporte <-> Central de Conhecimento ===
+    PainelSuporte -->|Atualiza| CentralConhecimento
+    CentralConhecimento -->|Consulta| PainelSuporte
 
-    %% --- Cores por Categoria (Tons escuros e contrastantes) ---
-    style Email fill:#1c7ed6,stroke:#0b5394,stroke-width:1px,color:#fff
-    style WhatsApp fill:#2b8a3e,stroke:#14532d,stroke-width:1px,color:#fff
 
-    style Jira fill:#b68900,stroke:#7a6000,stroke-width:1px,color:#fff
-    style Pay704 fill:#a85d00,stroke:#6b3700,stroke-width:1px,color:#fff
+    %% --- Cores escuras e contrastantes ---
+    style Email               fill:#1e5d9e,stroke:#123661,stroke-width:1px,color:#fff
+    style WhatsApp            fill:#2d7d46,stroke:#184025,stroke-width:1px,color:#fff
 
-    style PainelGestor fill:#1e3a8a,stroke:#12265b,stroke-width:1px,color:#fff
-    style PainelSuporte fill:#0c4a6e,stroke:#083047,stroke-width:1px,color:#fff
-    style CentralConhecimento fill:#14532d,stroke:#0a2917,stroke-width:1px,color:#fff
+    style Jira                fill:#8c6d1f,stroke:#594513,stroke-width:1px,color:#fff
+    style Pay704              fill:#8c460f,stroke:#522605,stroke-width:1px,color:#fff
 
-    style ModuloADM fill:#5e60ce,stroke:#3c3f99,stroke-width:1px,color:#fff
-    style SetorFinanceiro fill:#9c36b5,stroke:#6b1e84,stroke-width:1px,color:#fff
+    style PainelGestor        fill:#163f7a,stroke:#0d2547,stroke-width:1px,color:#fff
+    style PainelSuporte       fill:#0f304f,stroke:#061827,stroke-width:1px,color:#fff
+    style CentralConhecimento fill:#1a6433,stroke:#0d361b,stroke-width:1px,color:#fff
+
+    style ModuloADM           fill:#4b46a3,stroke:#27246b,stroke-width:1px,color:#fff
+    style SetorFinanceiro     fill:#762380,stroke:#461453,stroke-width:1px,color:#fff
+
+
+    %% --- Cores escuras e contrastantes ---
+    style Email               fill:#1e5d9e,stroke:#123661,stroke-width:1px,color:#fff
+    style WhatsApp            fill:#2d7d46,stroke:#184025,stroke-width:1px,color:#fff
+
+    style Jira                fill:#8c6d1f,stroke:#594513,stroke-width:1px,color:#fff
+    style Pay704              fill:#8c460f,stroke:#522605,stroke-width:1px,color:#fff
+
+    style PainelGestor        fill:#163f7a,stroke:#0d2547,stroke-width:1px,color:#fff
+    style PainelSuporte       fill:#0f304f,stroke:#061827,stroke-width:1px,color:#fff
+    style CentralConhecimento fill:#1a6433,stroke:#0d361b,stroke-width:1px,color:#fff
+
+    style ModuloADM           fill:#4b46a3,stroke:#27246b,stroke-width:1px,color:#fff
+    style SetorFinanceiro     fill:#762380,stroke:#461453,stroke-width:1px,color:#fff
+
 
 ```
